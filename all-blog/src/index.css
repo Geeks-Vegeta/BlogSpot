@@ -1,0 +1,75 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* for register route */
+.register-heading{
+  margin:4rem ;
+}
+
+
+.form{
+  margin: 4rem;
+  width: 40rem;
+}
+
+
+.boxs{
+  max-width: 640px;
+  margin: 0px auto;
+  border-radius: 16px;
+  border: 1px solid rgb(218, 222, 224);
+  padding: 48px 80px;
+}
+
+.heading-login{
+  display: flex;
+  padding-bottom: 48px;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: rgb(19, 20, 21);
+  font-size: 32px;
+  line-height: 1.25;
+  letter-spacing: calc(-0.64px);
+  font-weight: normal;
+}
+
+.login-button{
+  height: 48px;
+  padding: 0px calc(24px);
+  border-radius: calc(12px);
+  cursor: pointer;
+  border: None;
+  width: 100%;
+  position: relative;
+  color: rgb(255, 255, 255);
+  background: rgb(117, 81, 233);
+}
+
+
+
+/* for media of mobile */
+
+@media screen and (max-width: 768px) {
+  .form{
+    margin: 4rem;
+    width: 20rem;
+  }
+}
