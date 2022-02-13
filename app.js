@@ -43,7 +43,7 @@ app.use("/userpost", postRoute);
 app.use("/user", userRoute)
 
 app.get("/", (req, res)=>{
-    res.send("hello")
+    res.send("hello shreyas")
 })
 
 
