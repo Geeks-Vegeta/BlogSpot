@@ -58,3 +58,21 @@ exports.userFollowUnfollow = async (req, res) =>{
    }
 
 }
+
+
+
+// get current user
+exports.currentUser=async(req, res)=>{
+
+    let user_id = req.name.id;
+
+    try {
+        
+        const user = await userModel.findOne({_id:user_id});
+        res.status(200).send(user);
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}

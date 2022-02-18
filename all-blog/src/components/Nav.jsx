@@ -5,7 +5,12 @@ import Register from "./Register";
 import Login from "./Login";
 import Cookies from "js-cookie";
 import Forgot from "./Forgot";
+import Profile from "./Profile";
 import { LoginContext } from "../App";
+import Setting from "./Settings";
+import Error from "./Error";
+import Logout from "./Logout";
+import AddPost from "./AddPost";
 
 const Nav = () =>{
     const {state, dispatch} = useContext(LoginContext);
@@ -19,12 +24,10 @@ const Nav = () =>{
             let auth = Cookies.get('Authorization');
             if(auth){
                 dispatch({type:"isLogin", payload:true})
-                navigate("/");
             }
             else{
-                navigate("/login");
+                navigate("login")
                 dispatch({type:"isLogin", payload:false})
-
 
             }
 
@@ -38,14 +41,22 @@ const Nav = () =>{
         <Routes>
            {state?(
                <>
-                <Route exact path="/" element={<Home/>}/>
+                <Route path="" exact element={<Home/>}/>
+                <Route path="profile" exact element={<Profile/>}/>
+                <Route path="setting" exact element={<Setting/>}/>
+                <Route path="logout" exact element={<Logout/>}/>
+                <Route path="addpost" exact element={<AddPost/>}/>
+                <Route path="*" exact element={<Error/>}/>
+
 
                </>
            ):(
                <>
-                <Route exact path="/login" element={<Login/>}/>
-            <Route exact path="/register" element={<Register/>}/>
-            <Route exact path="/forgot" element={<Forgot/>}/>
+               
+                <Route exact path="login" element={<Login/>}/>
+                <Route exact path="register" element={<Register/>}/>
+                <Route exact path="forgot" element={<Forgot/>}/>
+                <Route path="*" exact element={<Error/>}/>
                </>
            )}
             <>

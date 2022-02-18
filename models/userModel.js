@@ -16,23 +16,41 @@ const userSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    location:{
+       type:String,
+    },
     profile_pic:{
         type:String,
     },
     education:{
         type:String
     },
-    profile_info:{
+    bio:{
         type:String
     },
     is_active:{
         type:Boolean,
         default:false
     },
+    instagram_link:{
+        type:String,
+    },
+    twitter_link:{
+        type:String,
+    },
+    linkedIn_link:{
+        type:String,
+    },
+    facebook_link:{
+        type:String
+    },
     gender:{
         type:String,
         enum : ['Male','Female', "Trans"],
         default:"Male"
+    },
+    background_image:{
+        type:String
     },
     mobile_number:{
         type:Number
