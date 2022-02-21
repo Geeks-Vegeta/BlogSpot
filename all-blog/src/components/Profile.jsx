@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Navigation from "./Navigation";
 import { FaUserFriends  } from "react-icons/fa";
+import { IoIosSchool  } from "react-icons/io";
 import { MdLocationPin  } from "react-icons/md";
 import {  AiOutlineInstagram, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
 import {  RiUserFollowFill  } from "react-icons/ri";
@@ -17,14 +18,26 @@ import { NavLink } from "react-router-dom";
 
 
 
-// FaUserFriends CgMoreO BsFillFileEarmarkPostFill GrFormAdd AiOutlineInstagram MdLocationPin
+// FaUserFriends CgMoreO BsFillFileEarmarkPostFill GrFormAdd AiOutlineInstagram MdLocationPin IoIosSchool
 
 const Profile=()=>{
 
     const [user, setUser] = useState();
     const [username, setUserName] = useState();
+    const [location, setLocation] = useState();
     const [following, setFollowing] = useState([]);
+    const [background, setBackground] = useState();
+    const [education, setEducation] = useState();
+    const [bio, setBio] = useState();
+    const [profile_pic, setProfilePic] = useState();
     const [followers, setFollowers] = useState([]);
+    const [instagram , setInstagram] = useState();
+    const [linkedIn, setLinkedIn] =  useState();
+    const [facebook, setFacebook] = useState();
+    const [twitter, setTwitter] = useState();
+
+
+
 
     useEffect(()=>{
         
@@ -33,21 +46,41 @@ const Profile=()=>{
             setFollowers(users.data.followers);
             setFollowing(users.data.following);
             setUser(users.data); 
-            setUserName(users.data.username)
+            setBio(users.data.bio);
+            setLocation(users.data.location);
+            setBackground(users.data.background_image);
+            setInstagram(users.data.instagram_link);
+            setUserName(users.data.username);
+            setProfilePic(users.data.profile_pic);
+            setLinkedIn(users.data.linkedIn_link);
+            setFacebook(users.data.facebook_link);
+            setTwitter(users.data.twitter_link)
+            setEducation(users.data.education);
         }
         getUser();
 
-    },[user])
+    },[])
+
 
 
 
     return(
         <>
         <Navigation/>
-        <div className="background-image" style={{backgroundImage: "url(/bg.jpg)"}}>
-        </div>
+        {background?(
+            <>
+            <div className="background-image" style={{backgroundImage: `url(${background})`}}>
+            </div>
+            </>
+        ):(
+            <>
+            <div className="background-image" style={{backgroundImage: "url(/bg.jpg)"}}>
+           </div>
+            </>
+        )}
+        
         <div className="text-center">
-            <img className="profile-pic" src={process.env.PUBLIC_URL+"profile.jpg"} alt="" />
+            <img className="profile-pic" src={profile_pic?profile_pic:process.env.PUBLIC_URL+"profile.jpg"} alt="" />
         </div>
         <div className="user-information">
             {user?(
@@ -61,19 +94,90 @@ const Profile=()=>{
             )}
         </div>
 
+        {/* bio */}
+
+        <div className="w-50 mx-auto text-center">
+            {bio?(
+                <>
+                <h6>{bio}</h6>
+                </>
+            ):(
+                <>
+                </>
+            )}
+
+        </div>
+
         {/* address and bout */}
-        <MDBContainer className="my-3">
-            <p className="text-center"><MdLocationPin/> Khopoli</p>
-        </MDBContainer>
+        {location?(
+            <>
+            <MDBContainer className="my-3">
+                <p className="text-center"><MdLocationPin/> {location}</p>
+            </MDBContainer>
+            </>
+        ):(
+            <>
+            </>
+        )}
+
+        {/* education */}
+
+        {education?(
+            <>
+            <MDBContainer className="my-3">
+                <p className="text-center"><IoIosSchool/> {education}</p>
+            </MDBContainer>
+            </>
+        ):(
+            <>
+            </>
+        )}
+       
 
          {/* social media */}
          <MDBContainer className="my-3">
             <div className="social-media-icons text-center">
                 <div className="flex-media">
-                <AiOutlineInstagram size={"1.8rem"}/>
-                <AiOutlineTwitter size={"1.8rem"}/>
-                <AiFillFacebook size={"1.8rem"}/>
-                <AiFillLinkedin size={"1.8rem"}/>
+                    {instagram?(
+                        <>
+                        <a href={instagram} target="_blank" rel="noopener noreferrer">
+                           <AiOutlineInstagram size={"1.8rem"}/>
+                        </a>
+                        </>
+                    ):(
+                        <>
+                        </>
+                    )}
+                    {twitter?(
+                        <>
+                        <a href={twitter} target="_blank" rel="noopener noreferrer">
+                        <AiOutlineTwitter size={"1.8rem"}/>
+                        </a>
+                        </>
+                    ):(
+                        <>
+                        </>
+                    )}
+                    {facebook?(
+                        <>
+                        <a href={facebook} target="_blank" rel="noopener noreferrer">
+                        <AiFillFacebook size={"1.8rem"}/>
+                        </a>
+                        </>
+                    ):(
+                        <>
+                        </>
+                    )}
+                    {linkedIn?(
+                        <>
+                        <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+                        <AiFillLinkedin size={"1.8rem"}/>
+                        </a>
+                        </>
+                    ):(
+                        <>
+                        </>
+                    )}
                 </div>
             </div>
         </MDBContainer>

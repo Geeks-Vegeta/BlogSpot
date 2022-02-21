@@ -53,7 +53,7 @@ const userSchema = mongoose.Schema({
         type:String
     },
     mobile_number:{
-        type:Number
+        type:String
     },
     followers:{
         type:Array
