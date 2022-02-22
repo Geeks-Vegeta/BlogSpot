@@ -2,11 +2,14 @@ import axios from "axios";
 import {
     MDBContainer, MDBBtn 
   } from 'mdb-react-ui-kit';
+import { MDBCard, MDBCardTitle, MDBCardFooter, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import Navigation from "./Navigation";
 import { FaUserFriends  } from "react-icons/fa";
+import { AiOutlineHeart  } from "react-icons/ai";
+import { BiComment  } from "react-icons/bi";
 import { IoIosSchool  } from "react-icons/io";
 import { MdLocationPin  } from "react-icons/md";
 import {  AiOutlineInstagram, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
@@ -15,15 +18,17 @@ import {  CgMoreO  } from "react-icons/cg";
 import {  GrFormAdd  } from "react-icons/gr";
 import {  BsFillFileEarmarkPostFill  } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import moment from "moment";
 
 
 
-// FaUserFriends CgMoreO BsFillFileEarmarkPostFill GrFormAdd AiOutlineInstagram MdLocationPin IoIosSchool
+// AiOutlineHeart BiComment
 
 const Profile=()=>{
 
     const [user, setUser] = useState();
     const [username, setUserName] = useState();
+    const [posts, setPosts] = useState([]);
     const [location, setLocation] = useState();
     const [following, setFollowing] = useState([]);
     const [background, setBackground] = useState();
@@ -43,6 +48,8 @@ const Profile=()=>{
         
         const getUser = async()=>{
             let users = await axios.get("/user/currentuser");
+            let allposts = await axios.get("/userpost/allpost");
+            setPosts(allposts.data);
             setFollowers(users.data.followers);
             setFollowing(users.data.following);
             setUser(users.data); 
@@ -186,7 +193,7 @@ const Profile=()=>{
         <div className="flex-info">
           <div className="followers cursur text-center">
                 <BsFillFileEarmarkPostFill  size={"1.3rem"}/>
-                <p>0 posts</p>
+                <p>{posts.length} posts</p>
             </div>
             <div className="followers cursur text-center">
                 <FaUserFriends  size={"1.3rem"}/>
@@ -232,6 +239,74 @@ const Profile=()=>{
                 </div>
             </MDBContainer>
         </div>
+
+
+        {/* post cards */}
+        <MDBContainer className="my-4">
+
+            <MDBRow className="g-4">
+                {posts?(
+                    <>
+                    {posts.map((data, idx)=>{
+                        return(
+                            <>
+                         
+                                <MDBCol key={idx} sm={12} md={6} lg={4}>
+                                    <MDBCard className="shadow-lg h-100 gy-3">
+                                    <MDBCardImage
+                                        className="profile-post-card-image"
+                                        
+                                        src={data.image?data.image:process.env.PUBLIC_URL+"bg.jpg"}
+                                        alt='...'
+                                        position='top'
+                                    />
+                                    <MDBCardBody>
+                                        <MDBCardTitle>{data.title}</MDBCardTitle>
+                                        <MDBCardText>
+                                        {data.meta_content.slice(0, -170)}...
+                                        </MDBCardText>
+                                        <div className="">
+                                            <a href="#">
+                                            readmore
+                                            </a>
+                                            
+                                        </div>
+                                    </MDBCardBody>
+                                    <MDBCardFooter>
+                                        <div className='text-muted card-footer-section'>
+                                            <div className="icons">
+                                                <div className="like">
+                                                    <AiOutlineHeart size={"1.5rem"} className="mx-2"/>
+                                                    <p className="text-center">0</p>
+                                                </div>
+
+                                                <div className="comment">
+                                                <BiComment size={"1.5rem"} className="mx-2"/>
+                                                <p className="text-center">0</p>
+                                                </div> 
+                                            </div>
+                                            <div className="date-section">
+                                                <small>{moment(data.postDateUpdate).fromNow()}</small>
+                                            </div>                       
+                                        </div>
+                                    </MDBCardFooter>
+                                    </MDBCard>
+                                </MDBCol>
+                            </>
+                        )
+
+                    })}
+                    </>
+                ):(
+                    <>
+                    </>
+                )}
+            
+            </MDBRow>
+       </MDBContainer>
+       
+
+
         </>
     )
 }

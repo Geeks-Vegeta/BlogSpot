@@ -1,11 +1,15 @@
 
 const postModel = require("../models/postModel");
 
+// object
+var ObjectId = require('mongoose').Types.ObjectId; 
+
+
 
 // create post
 exports.createPost = async(req, res) => {
 
-    let {title, content, meta_content, tags} = req.body;
+    let {title, content, meta_content, tags, image} = req.body;
 
     const _id = req.name.id;
 
@@ -15,6 +19,7 @@ exports.createPost = async(req, res) => {
 
     const new_post = postModel({
         title:title,
+        image:image,
         content:content,
         meta_content:meta_content,
         tags:tags,
@@ -86,4 +91,20 @@ exports.updatePost = async(req, res)=>{
         console.log(error);
         
     }
+}
+
+// getall usersPost
+
+exports.getAllPosts=async(req, res)=>{
+
+    try {
+        let user_id = req.name.id;
+        const allposts = await postModel.find({user:user_id}).sort({postDateUpdate:-1});
+        res.status(200).send(allposts);
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+
 }

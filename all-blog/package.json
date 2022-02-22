@@ -10,6 +10,7 @@
     "axios": "^0.25.0",
     "js-cookie": "^3.0.1",
     "mdb-react-ui-kit": "^2.3.0",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-html-parser": "^2.0.2",

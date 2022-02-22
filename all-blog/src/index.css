@@ -114,6 +114,24 @@ pre{
   border-radius: 50%;
 }
 
+.blog-image-set{
+  width: 10rem;
+  height: 10rem;
+}
+.icons{
+  display: flex;
+}
+
+.card-footer-section{
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-post-card-image{
+  height: 20rem;
+
+}
+
 .ql-editor {
   height: 100%;
   flex: 1;
