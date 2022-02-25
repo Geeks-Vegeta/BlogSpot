@@ -1,5 +1,6 @@
-<h1><center><u> BlogSpot</u> 📖 </center></h1>
-<hr>
+# BlogSpot</u> 📖 
+---
+
 
 
  💁 This is an fullstack web application which is build is top of mern stack (Mongdb, Express, Reactjs, Nodejs).Which will help students to create there own public blogs and to share there knowledge.
