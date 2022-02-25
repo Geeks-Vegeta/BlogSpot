@@ -41,6 +41,6 @@ If you Like/Love this project 👍  💓 please give a star
 <br>
 <br>
 
-<img width="1500" height="150" src="../college-project-sem-1/all-blog/public/goku-cardano.gif"/>
+<img width="1000" height="150" src="../college-project-sem-1/all-blog/public/goku-cardano.gif"/>
 
 
