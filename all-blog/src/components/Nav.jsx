@@ -11,6 +11,8 @@ import Setting from "./Settings";
 import Error from "./Error";
 import Logout from "./Logout";
 import AddPost from "./AddPost";
+import ReadBlog from "./ReadBlog";
+import EditPost from "./EditPost";
 
 const Nav = () =>{
     const {state, dispatch} = useContext(LoginContext);
@@ -44,10 +46,11 @@ const Nav = () =>{
                 <Route path="" exact element={<Home/>}/>
                 <Route path="profile" exact element={<Profile/>}/>
                 <Route path="setting" exact element={<Setting/>}/>
+                <Route path="editpost/:id/:slug" exact element={<EditPost/>}/>
                 <Route path="logout" exact element={<Logout/>}/>
                 <Route path="addpost" exact element={<AddPost/>}/>
+                <Route path="blog/:id/:slug" exact element={<ReadBlog/>}/>
                 <Route path="*" exact element={<Error/>}/>
-
 
                </>
            ):(

@@ -16,6 +16,19 @@ exports.userUpdateProfile = async (req, res)=>{
 }
 
 
+// get user id
+exports.getUserId=async(req, res)=>{
+    try {
+
+        const user_id = req.name.id;
+        res.status(200).send(user_id);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 // get all users
 exports.allUsers = async (req, res) => {

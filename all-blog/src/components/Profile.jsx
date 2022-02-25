@@ -2,31 +2,35 @@ import axios from "axios";
 import {
     MDBContainer, MDBBtn 
   } from 'mdb-react-ui-kit';
-import { MDBCard, MDBCardTitle, MDBCardFooter, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from 'mdb-react-ui-kit';
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { MDBCard, MDBCardTitle, MDBTooltip, MDBCardFooter, MDBCardText, 
+    MDBCardBody, MDBCardImage, MDBRow, MDBCol, MDBModal,MDBModalDialog,
+    MDBModalContent,MDBModalHeader,MDBModalTitle,MDBModalBody,MDBModalFooter,
+} from 'mdb-react-ui-kit';
+import React,{ useEffect, useState } from "react";
 import Navigation from "./Navigation";
 import { FaUserFriends  } from "react-icons/fa";
 import { AiOutlineHeart  } from "react-icons/ai";
 import { BiComment  } from "react-icons/bi";
 import { IoIosSchool  } from "react-icons/io";
 import { MdLocationPin  } from "react-icons/md";
-import {  AiOutlineInstagram, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
+import {  AiOutlineInstagram, AiOutlineDelete,  AiOutlineEdit, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
 import {  RiUserFollowFill  } from "react-icons/ri";
 import {  CgMoreO  } from "react-icons/cg";
 import {  GrFormAdd  } from "react-icons/gr";
 import {  BsFillFileEarmarkPostFill  } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
+import { Audio } from  'react-loader-spinner'
 
 
 
-// AiOutlineHeart BiComment
+// AiOutlineHeart BiComment AiOutlineDelete, AiOutlineEdit
 
 const Profile=()=>{
 
     const [user, setUser] = useState();
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [username, setUserName] = useState();
     const [posts, setPosts] = useState([]);
     const [location, setLocation] = useState();
@@ -40,13 +44,25 @@ const Profile=()=>{
     const [linkedIn, setLinkedIn] =  useState();
     const [facebook, setFacebook] = useState();
     const [twitter, setTwitter] = useState();
+    const [idx, setIdx] = useState();
+    const [id, setid] = useState();
 
 
+    const deleteShowOpen = (idx, id) =>{
+        setDeleteModal(true);
+        setid(id);
+        setIdx(idx);
+    } 
+
+    const deleteShowClose=()=>{
+        setDeleteModal(false);
+    }
 
 
     useEffect(()=>{
         
         const getUser = async()=>{
+            setLoading(true);
             let users = await axios.get("/user/currentuser");
             let allposts = await axios.get("/userpost/allpost");
             setPosts(allposts.data);
@@ -63,6 +79,7 @@ const Profile=()=>{
             setFacebook(users.data.facebook_link);
             setTwitter(users.data.twitter_link)
             setEducation(users.data.education);
+            setLoading(false);
         }
         getUser();
 
@@ -70,9 +87,34 @@ const Profile=()=>{
 
 
 
+    const deletePost = async()=>{
+        setPosts((posts)=>
+            posts.filter((data, index)=>{
+                return index !== idx;
+
+            }))
+            await axios.delete(`/userpost/delete/${id}`);
+        setDeleteModal(false);
+    }
+
+
+
 
     return(
         <>
+        {loading?(
+            <>
+                <div className="loading-center">
+                <Audio
+                    height="100"
+                    width="100"
+                    color='grey'
+                    ariaLabel='loading'
+                    />
+                </div>
+            </>
+        ):(
+            <>
         <Navigation/>
         {background?(
             <>
@@ -193,7 +235,7 @@ const Profile=()=>{
         <div className="flex-info">
           <div className="followers cursur text-center">
                 <BsFillFileEarmarkPostFill  size={"1.3rem"}/>
-                <p>{posts.length} posts</p>
+                <p>{posts ? posts.length:0} posts</p>
             </div>
             <div className="followers cursur text-center">
                 <FaUserFriends  size={"1.3rem"}/>
@@ -266,11 +308,49 @@ const Profile=()=>{
                                         {data.meta_content.slice(0, -170)}...
                                         </MDBCardText>
                                         <div className="">
-                                            <a href="#">
+                                            <NavLink exact to={`/blog/${data._id}/${data.slug.replace(/\s+/g,'-')}`}>
                                             readmore
-                                            </a>
-                                            
+                                            </NavLink>
                                         </div>
+                                        {/* action buttons */}
+                                        {user._id === data.user?(
+                                            <>
+                                            <div className="action-buttons my-3 float-lg-end cursur">
+                                               <MDBTooltip tag='a' className='text-dark' title="Edit">
+                                                    {' '}
+                                                    <NavLink exact to={`/editpost/${data._id}/${data.slug.replace(/\s+/g,'-')}`}>
+                                                        <AiOutlineEdit className="mx-2 text-dark" size={"1.3rem"}/>
+                                                    </NavLink>
+                                                </MDBTooltip>
+                                                <MDBTooltip tag='a' className='text-dark' title="Delete">
+                                                   <AiOutlineDelete onClick={()=>deleteShowOpen(idx, data._id)} className="mx-2" size={"1.3rem"}/>
+                                                   <MDBModal show={deleteModal} setShow={setDeleteModal} tabIndex='-1'>
+                                                    <MDBModalDialog>
+                                                    <MDBModalContent>
+                                                        <MDBModalHeader>
+                                                        <MDBModalTitle>Delete Blog</MDBModalTitle>
+                                                        <MDBBtn className='btn-close' color='none' onClick={deleteShowClose}></MDBBtn>
+                                                        </MDBModalHeader>
+                                                        <MDBModalBody>Are You Sure Want To Delete This.</MDBModalBody>
+
+                                                        <MDBModalFooter>
+                                                        <MDBBtn color='secondary' onClick={deleteShowClose}>
+                                                            Close
+                                                        </MDBBtn>
+                                                        <MDBBtn onClick={deletePost}>Delete</MDBBtn>
+                                                        </MDBModalFooter>
+                                                    </MDBModalContent>
+                                                    </MDBModalDialog>
+                                                </MDBModal>
+                                                </MDBTooltip>
+
+
+                                            </div>
+                                            </>
+                                        ):(
+                                            <>
+                                            </>
+                                        )}
                                     </MDBCardBody>
                                     <MDBCardFooter>
                                         <div className='text-muted card-footer-section'>
@@ -282,7 +362,7 @@ const Profile=()=>{
 
                                                 <div className="comment">
                                                 <BiComment size={"1.5rem"} className="mx-2"/>
-                                                <p className="text-center">0</p>
+                                                <p className="text-center">{data.comments?data.comments.length:0}</p>
                                                 </div> 
                                             </div>
                                             <div className="date-section">
@@ -305,7 +385,8 @@ const Profile=()=>{
             </MDBRow>
        </MDBContainer>
        
-
+       </>
+        )}
 
         </>
     )

@@ -9,10 +9,10 @@ exports.registerUser = async(req, res)=>{
         let {username, email} = req.body;
 
         const usernameAlreadyPresent =await userModel.findOne({username:username});
-        if(usernameAlreadyPresent) return res.json({"message": "username already exists"});
+        if(usernameAlreadyPresent) return res.status(401).json({"message": "username already exists"});
 
         const emailAlreadyPresent = await userModel.findOne({email:email});
-        if(emailAlreadyPresent) return res.json({"message": "given email already exists"});
+        if(emailAlreadyPresent) return res.status(401).json({"message": "given email already exists"});
 
         // creating salt
         let salt = await bcrypt.genSaltSync(13);

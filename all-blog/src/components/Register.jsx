@@ -26,7 +26,7 @@ const Register=()=>{
         }
         
         try {
-            await axios.post("/userregister", data);
+            await axios.post("/register", data);
             toast.success("User Created Successfully", {
                 position: "top-center",
                 autoClose: 5000,

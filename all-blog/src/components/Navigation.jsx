@@ -17,25 +17,25 @@ export default function Navigation() {
       <MDBContainer fluid>
         <a className='navbar-brand'>Public Blog</a>
         <div className='d-flex input-group w-auto'>
-            <MDBTooltip tag='a' className='text-dark' wrapperProps={{ href: '#' }} title="Home">
+            <MDBTooltip tag='a' className='text-dark' title="Home">
                 {' '}
                 <NavLink to="/">
                     <AiOutlineHome className='mx-1 text-dark' size={"1.5rem"}/>
                 </NavLink>
             </MDBTooltip>
-            <MDBTooltip tag='a' wrapperProps={{ href: '#' }} title="Profile">
+            <MDBTooltip tag='a' title="Profile">
                 {' '}
                 <NavLink to="/profile">
                    <CgProfile className='mx-1 text-dark' size={"1.5rem"}/>
                 </NavLink>
             </MDBTooltip>
-            <MDBTooltip tag='a' wrapperProps={{ href: '#' }} title="Settings">
+            <MDBTooltip tag='a' title="Settings">
                 {' '}
                 <NavLink to="/setting">
                    <AiOutlineSetting className='mx-1 text-dark' size={"1.5rem"}/>
                 </NavLink>
             </MDBTooltip>
-            <MDBTooltip tag='a' wrapperProps={{ href: '#' }} title="logout">
+            <MDBTooltip tag='a' title="logout">
                 {' '}
                 <NavLink to="/logout">
                    <BiLogOut className='mx-1 text-dark' size={"1.5rem"}/>

@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&display=swap');
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   outline: none;
+  font-family: 'Barlow', sans-serif;
 }
 
 body {
@@ -132,6 +134,39 @@ pre{
 
 }
 
+
+.profile-pic-small{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+
+.small-profile{
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+
+.loading-center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.user-blog-profile{
+  display: flex;
+  justify-content: space-between;
+}
+
+.username-profile{
+  display: flex;
+}
+
+.image-read-blog{
+  height: 35rem;
+}
+
 .ql-editor {
   height: 100%;
   flex: 1;
@@ -164,11 +199,37 @@ pre{
   border-radius: 50%;
   margin-bottom: -50px;
 }
+
+
+/* comment-section */
+.comment-section{
+  display: flex;
+}
+.comment_input{
+  width: 22rem;
+  margin: 0rem 1rem;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
 /* for media of mobile */
 
 @media screen and (max-width: 768px) {
   .form{
     margin: 4rem;
     width: 20rem;
+  }
+  .comment_input{
+    width: 14.8rem;
+    margin: 0rem 1rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .comment-by-user span{
+    font-size: 0.9rem;
+
   }
 }

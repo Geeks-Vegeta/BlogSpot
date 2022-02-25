@@ -14,6 +14,9 @@ const postRoute = require("./routes/postRoute");
 
 const userRoute = require("./routes/userRoute");
 
+const commentRoute = require('./routes/commentRoute');
+
+
 //importing cors
 const cors = require('cors');
 
@@ -40,7 +43,8 @@ app.use(function (req, res, next) {
 app.use("/register", registerRoute);
 app.use("/userlogin", loginRoute);
 app.use("/userpost", postRoute);
-app.use("/user", userRoute)
+app.use("/user", userRoute);
+app.use("/comment", commentRoute);
 
 app.get("/", (req, res)=>{
     res.send("hello shreyas")

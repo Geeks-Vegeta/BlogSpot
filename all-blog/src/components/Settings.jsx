@@ -7,6 +7,8 @@ import {
 import { GrLinkPrevious  } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Audio } from  'react-loader-spinner'
+
 
 const Setting = () =>{
 
@@ -14,6 +16,7 @@ const Setting = () =>{
 
     // stage
     const [username, setName] = useState();
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState();
     const [gender, setGender] = useState();
     const [location, setLocation] = useState();
@@ -38,7 +41,7 @@ const Setting = () =>{
     useEffect(()=>{
 
         const getUserDetails=async()=>{
-
+            setLoading(true);
             const userDetails = await axios.get("/user/currentuser");
             setName(userDetails.data.username);
             setEmail(userDetails.data.email);
@@ -52,7 +55,8 @@ const Setting = () =>{
             setInstagram(userDetails.data.instagram_link);
             setTwitter(userDetails.data.twitter_link);
             setLinkedIn(userDetails.data.linkedIn_link);
-            setFacebook(userDetails.data.facebook_link)
+            setFacebook(userDetails.data.facebook_link);
+            setLoading(false);
 
         }
         getUserDetails();
@@ -139,6 +143,20 @@ const Setting = () =>{
 
     return (
         <>
+        {loading?(
+            <>
+             <div className="loading-center">
+                <Audio
+                    height="100"
+                    width="100"
+                    color='grey'
+                    ariaLabel='loading'
+                    />
+                </div>
+            </>
+        ):(
+            <>
+           
         <Navigation/>
         <MDBContainer className="my-5">
             <GrLinkPrevious className="cursur mb-5" size={"1.5rem"} onClick={() => navigate(-1)}/>
@@ -202,6 +220,8 @@ const Setting = () =>{
             </form>
 
         </MDBContainer>
+        </>
+        )}
         
         </>
     )

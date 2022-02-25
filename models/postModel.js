@@ -14,6 +14,10 @@ const postSchema = mongoose.Schema({
         type:String,
 
     },
+    slug:{
+        type:String
+
+    },
     meta_content:{
         type:String,
         required:true

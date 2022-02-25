@@ -9,7 +9,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 // create post
 exports.createPost = async(req, res) => {
 
-    let {title, content, meta_content, tags, image} = req.body;
+    let {title, content, meta_content, tags, image, slug} = req.body;
 
     const _id = req.name.id;
 
@@ -17,10 +17,12 @@ exports.createPost = async(req, res) => {
     const isTitlePresent = await postModel.findOne({title:title});
     if(isTitlePresent) return res.json({"message":"Title Already Present"});
 
+
     const new_post = postModel({
         title:title,
         image:image,
         content:content,
+        slug:slug,
         meta_content:meta_content,
         tags:tags,
         user:_id
@@ -41,17 +43,17 @@ exports.createPost = async(req, res) => {
 // delete post
 exports.deletePost = async(req, res)=>{
 
-    let {title} = req.params;
+    let {id} = req.params;
     let user_id = req.name.id;
 
-    const isValidPost =await postModel.findOne({title:title});
+    const isValidPost =await postModel.findOne({_id:id});
 
     if(!isValidPost) return res.json({"message": "This post does not exists"});
 
 
     try {
         if(user_id == isValidPost.user){
-           await postModel.deleteOne({title:title});
+           await postModel.deleteOne({_id:id});
            res.json({"message":"deleted successfully"});
     
         }else{
@@ -69,10 +71,10 @@ exports.deletePost = async(req, res)=>{
 // update post
 exports.updatePost = async(req, res)=>{
 
-    let {title} = req.params;
+    let {id} = req.params;
     let user_id = req.name.id;
 
-    const isValidPost = await postModel.findOne({title:title});
+    const isValidPost = await postModel.findOne({_id:id});
 
     if(!isValidPost) return res.json({"message": "This post does not exists"});
 
@@ -93,6 +95,11 @@ exports.updatePost = async(req, res)=>{
     }
 }
 
+
+
+
+
+
 // getall usersPost
 
 exports.getAllPosts=async(req, res)=>{
@@ -107,4 +114,24 @@ exports.getAllPosts=async(req, res)=>{
         
     }
 
+}
+
+// get post by title
+exports.getPostByTitle=async(req, res)=>{
+
+    let {_id} = req.query
+
+    try {
+        const allpost = await postModel.findOne({_id:_id}).populate('user').populate({path:'comments',options:{
+            sort:{
+                "commentDateUpdate":-1
+            },populate:{
+            path:"user"
+        }}});
+        res.status(200).send(allpost);
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
 }
