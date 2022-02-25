@@ -41,6 +41,6 @@ If you Like/Love this project 👍  💓 please give a star
 <br>
 <br>
 
-<img width="810" height="150" src="https://github.com/Geeks-Vegeta/BlogSpot/blob/master/all-blog/public/goku-cardano.gif"/>
+<img width="810" height="200" src="https://github.com/Geeks-Vegeta/BlogSpot/blob/master/all-blog/public/goku-cardano.gif"/>
 
 
