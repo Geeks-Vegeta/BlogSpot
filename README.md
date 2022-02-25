@@ -8,6 +8,7 @@
 
 ### Installation
 First Clone repository.
+
 ```bash
 git clone https://github.com/Geeks-Vegeta/BlogSpot.git
 ```
