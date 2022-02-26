@@ -13,7 +13,7 @@ import { AiOutlineHeart  } from "react-icons/ai";
 import { BiComment  } from "react-icons/bi";
 import { IoIosSchool  } from "react-icons/io";
 import { MdLocationPin  } from "react-icons/md";
-import {  AiOutlineInstagram, AiOutlineDelete,  AiOutlineEdit, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
+import {  AiOutlineInstagram, AiOutlineDelete,  AiOutlineEdit, AiFillHeart, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
 import {  RiUserFollowFill  } from "react-icons/ri";
 import {  CgMoreO  } from "react-icons/cg";
 import {  GrFormAdd  } from "react-icons/gr";
@@ -86,6 +86,28 @@ const Profile=()=>{
     },[])
 
 
+    const getUser = async()=>{
+        setLoading(true);
+        let users = await axios.get("/user/currentuser");
+        let allposts = await axios.get("/userpost/allpost");
+        setPosts(allposts.data);
+        setFollowers(users.data.followers);
+        setFollowing(users.data.following);
+        setUser(users.data); 
+        setBio(users.data.bio);
+        setLocation(users.data.location);
+        setBackground(users.data.background_image);
+        setInstagram(users.data.instagram_link);
+        setUserName(users.data.username);
+        setProfilePic(users.data.profile_pic);
+        setLinkedIn(users.data.linkedIn_link);
+        setFacebook(users.data.facebook_link);
+        setTwitter(users.data.twitter_link)
+        setEducation(users.data.education);
+        setLoading(false);
+    }
+
+
 
     const deletePost = async()=>{
         setPosts((posts)=>
@@ -97,6 +119,34 @@ const Profile=()=>{
         setDeleteModal(false);
     }
 
+
+    const isLike=async(post_id)=>{
+
+        try {
+            await axios.post("/like/islike", {
+                post_id:post_id
+            })
+            getUser()
+            
+        } catch (error) {
+            console.log(error);
+        }
+
+       
+    }
+
+
+    
+    const unLike=async(post_id)=>{
+        try {
+
+            await axios.delete(`/like/unlike/${post_id}`);
+            getUser();
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
 
@@ -356,12 +406,22 @@ const Profile=()=>{
                                         <div className='text-muted card-footer-section'>
                                             <div className="icons">
                                                 <div className="like">
-                                                    <AiOutlineHeart size={"1.5rem"} className="mx-2"/>
-                                                    <p className="text-center">0</p>
+                                                    {data.likes.includes(user._id)?(
+                                                        <>
+                                                        <AiFillHeart onClick={()=>unLike(data._id)}  size={"1.5rem"} className="mx-2 pink cursur"/>
+                                                        <p className="text-center">{data.likes?data.likes.length:0}</p>
+                                                        </>
+                                                    ):(
+                                                        <>
+                                                        <AiOutlineHeart onClick={()=>isLike(data._id)}  size={"1.5rem"} className="mx-2 cursur"/>
+                                                        <p className="text-center">{data.likes?data.likes.length:0}</p>
+                                                        </>
+                                                    )}
+                                                    
                                                 </div>
 
                                                 <div className="comment">
-                                                <BiComment size={"1.5rem"} className="mx-2"/>
+                                                <BiComment size={"1.5rem"} className="mx-2 cursur"/>
                                                 <p className="text-center">{data.comments?data.comments.length:0}</p>
                                                 </div> 
                                             </div>

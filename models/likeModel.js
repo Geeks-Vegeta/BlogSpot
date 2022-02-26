@@ -4,9 +4,6 @@ const mongoose = require('mongoose');
 
 const likeSchema = mongoose.Schema({
 
-    like:{
-        type:Number,
-    },
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'

@@ -213,6 +213,10 @@ pre{
   border-right: none;
 }
 
+.pink{
+  color: #d61031;
+}
+
 /* for media of mobile */
 
 @media screen and (max-width: 768px) {
