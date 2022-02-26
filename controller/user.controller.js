@@ -73,6 +73,23 @@ exports.userFollowUnfollow = async (req, res) =>{
 }
 
 
+// delete user
+exports.deleteUser=async(req, res)=>{
+    let {user_id} = req.params;
+    try {
+
+        const user = await userModel.findByIdAndDelete({_id:user_id});
+        if(!user) return res.status(404).json({"message": "This user does not exists"});
+        
+        res.status(200).json({"message": "Deleted successfully"});
+
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+} 
+
 
 // get current user
 exports.currentUser=async(req, res)=>{

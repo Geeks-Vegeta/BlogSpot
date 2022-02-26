@@ -13,6 +13,7 @@ const verifyUser = require('../verifyUser');
 // user update profile
 userRoute.put("/updateprofile", verifyUser, userController.userUpdateProfile);
 userRoute.get("/alluser", userController.allUsers);
+userRoute.delete("/deleteuser/:user_id", userController.deleteUser);
 userRoute.get("/getUserId",verifyUser, userController.getUserId);
 userRoute.get("/currentuser",verifyUser, userController.currentUser);
 module.exports=userRoute;
