@@ -98,6 +98,19 @@ exports.updatePost = async(req, res)=>{
 
 
 
+// getAllRecentPosts
+exports.getAllRecentPosts=async(req, res)=>{
+
+    try {
+        const allposts = await postModel.find().sort({postDateUpdate:-1});
+        res.status(200).send(allposts);
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
+
 
 
 // getall usersPost

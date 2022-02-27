@@ -22,6 +22,10 @@ const postSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    like:{
+        type:Number
+
+    },
     likes:[
         {
             type:mongoose.Schema.Types.ObjectId,

@@ -52,7 +52,7 @@ const ReadBlog=()=>{
         const getPost = async() =>{
             try {
                 setLoading(true)
-                let posts = await axios.get(`/userpost/getpostbytitle?_id=${id}`);
+                let posts = await axios.get(`/post/getpostbytitle?_id=${id}`);
                 let user = await axios.get('/user/currentuser');
                 setUser(user.data);
                 setAllComment(posts.data.comments);
@@ -128,8 +128,8 @@ const ReadBlog=()=>{
         setAllComment(data=>data.filter((val, id)=>{
             return cindex!==id;
         }))
-        await axios.delete(`/comment/deletecomment/${commentId}/${post._id}`);
         setDeleteModal(false);
+        await axios.delete(`/comment/deletecomment/${commentId}/${post._id}`);
 
     }
 
@@ -196,7 +196,7 @@ const ReadBlog=()=>{
                                 <hr />
                                 <div className="comment-section">
                                     <div>
-                                        <img className="profile-pic-small" src={user.profile_pic} alt="" />
+                                        <img className="profile-pic-small" src={user.profile_pic?user.profile_pic:process.env.PUBLIC_URL + '/profile.jpg'} alt="" />
                                     </div>
                                     {isEdit?(
                                         <>
@@ -223,15 +223,27 @@ const ReadBlog=()=>{
 
                             {allcomment.map((data, idx)=>{
                                 return (
-                                    < >
+                                    <>
                                     <div key={idx}>
                                        <hr />
                                        <div className="comment-by-user">
                                            <img className="profile-pic-small" src={data.user.profile_pic?data.user.profile_pic:user.profile_pic} alt="" />
-                                           <span className="mx-2">{data.user.username?data.user.username:post.user.username}</span>
+                                           {user._id === data.user._id && user._id === data.user?(
+                                               <>
+                                                    <NavLink exact to="/profile">
+                                                    <span className="mx-2">{data.user.username?data.user.username:user.username}</span>
+                                                    </NavLink>   
+                                               </>
+                                           ):(
+                                               <>
+                                                    <NavLink exact to="/profile">
+                                                    <span className="mx-2">{data.user.username?data.user.username:user.username}</span>
+                                                    </NavLink>
+                                               </>
+                                           )}
                                            <span className="mx-2">{moment(data.commentDateUpdate).fromNow()}</span>
                                            <p className="mx-5">{data.comment}</p>
-                                           {user._id === data.user._id || data.user?(
+                                           {user._id === (data.user._id || data.user)?(
                                                <>
                                                <div className="mx-5">
                                                 <MDBTooltip tag='a' className='text-dark' title="Edit">

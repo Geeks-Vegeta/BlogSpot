@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
     },
     profile_pic:{
         type:String,
+        default:"https://res.cloudinary.com/getcomix/image/upload/v1645970189/public%20blog/b8mqpjx2r3uzzxlwg78g.jpg"
     },
     education:{
         type:String
@@ -50,7 +51,8 @@ const userSchema = mongoose.Schema({
         default:"Male"
     },
     background_image:{
-        type:String
+        type:String,
+        default:"https://res.cloudinary.com/getcomix/image/upload/v1645970269/public%20blog/uatvmpk2b9347yhvxv9k.jpg"
     },
     mobile_number:{
         type:String

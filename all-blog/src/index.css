@@ -181,6 +181,17 @@ pre{
   background-size: cover;
 }
 
+.big-text{
+  font-size: 3rem;
+}
+
+.background-image-home{
+  height: 25rem;
+  background-position: center; 
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
 .flex-info{
   display: flex;
   justify-content: space-evenly;
@@ -230,6 +241,9 @@ pre{
     border-top: none;
     border-left: none;
     border-right: none;
+  }
+  .big-text{
+    font-size: 2rem;
   }
 
   .comment-by-user span{

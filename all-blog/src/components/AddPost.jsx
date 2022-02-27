@@ -60,7 +60,7 @@ const AddPost=()=>{
             const article_img = res.data.secure_url;
 
 
-            await axios.post(`/userpost/create`,{
+            await axios.post(`/post/create`,{
                 title:title,
                 content:text,
                 slug:slug,

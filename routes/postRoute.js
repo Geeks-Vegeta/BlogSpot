@@ -9,6 +9,7 @@ postRoute.delete("/delete/:id", verifyUser, postController.deletePost);
 postRoute.put("/update/:id", verifyUser, postController.updatePost);
 postRoute.get("/allpost",verifyUser, postController.getAllPosts);
 postRoute.get("/getpostbytitle", verifyUser, postController.getPostByTitle);
+postRoute.get("/getAllRecentPosts", postController.getAllRecentPosts);
 
 module.exports=postRoute;
 

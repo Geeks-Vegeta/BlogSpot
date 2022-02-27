@@ -18,6 +18,7 @@ exports.likePost=async(req, res)=>{
            
         })
         await liked.save();
+        await postModel.findByIdAndUpdate({_id:post_id},{$inc:{like:1}})
         await posts.likes.push(user_id);
         await posts.save();
         res.json({"message": "liked"});
@@ -40,7 +41,7 @@ exports.unLike=async(req, res)=>{
         if(!likeuser) return res.status(404).json({"message": "No such like"});
 
         if(likeuser.user == user_id){
-            await postModel.findByIdAndUpdate({_id:post_id}, {$pull:{likes:user_id}});
+            await postModel.findByIdAndUpdate({_id:post_id}, {$pull:{likes:user_id},$inc:{like:-1}});
             await likeModel.deleteOne({user:user_id, post:post_id});
             res.status(200).json({"message":"Deleted Like successfully"});
 

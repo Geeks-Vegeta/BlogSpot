@@ -44,7 +44,7 @@ app.use(function (req, res, next) {
 // routes
 app.use("/register", registerRoute);
 app.use("/userlogin", loginRoute);
-app.use("/userpost", postRoute);
+app.use("/post", postRoute);
 app.use("/user", userRoute);
 app.use("/comment", commentRoute);
 app.use("/like", likeRoute);

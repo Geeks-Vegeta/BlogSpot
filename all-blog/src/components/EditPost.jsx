@@ -36,7 +36,7 @@ const EditPost=()=>{
 
         const getPost = async()=>{
         setLoading(true);
-        let posts = await axios.get(`/userpost/getpostbytitle?_id=${id}`);
+        let posts = await axios.get(`/post/getpostbytitle?_id=${id}`);
         setText(posts.data.content);
         setTitle(posts.data.title);
         setSlug(posts.data.slug.replace(/-/g,' '));
@@ -84,7 +84,7 @@ const EditPost=()=>{
 
             const article_img = res.data.secure_url;
 
-            await axios.put(`/userpost/update/${id}`,{
+            await axios.put(`/post/update/${id}`,{
                 image:article_img,
             });
 
@@ -101,7 +101,7 @@ const EditPost=()=>{
 
         try {
 
-            await axios.put(`/userpost/update/${id}`,{
+            await axios.put(`/post/update/${id}`,{
                 title:title,
                 content:text,
                 slug:slugs,

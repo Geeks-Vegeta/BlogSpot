@@ -64,7 +64,7 @@ const Profile=()=>{
         const getUser = async()=>{
             setLoading(true);
             let users = await axios.get("/user/currentuser");
-            let allposts = await axios.get("/userpost/allpost");
+            let allposts = await axios.get("/post/allpost");
             setPosts(allposts.data);
             setFollowers(users.data.followers);
             setFollowing(users.data.following);
@@ -89,7 +89,7 @@ const Profile=()=>{
     const getUser = async()=>{
         setLoading(true);
         let users = await axios.get("/user/currentuser");
-        let allposts = await axios.get("/userpost/allpost");
+        let allposts = await axios.get("/post/allpost");
         setPosts(allposts.data);
         setFollowers(users.data.followers);
         setFollowing(users.data.following);
@@ -355,7 +355,7 @@ const Profile=()=>{
                                     <MDBCardBody>
                                         <MDBCardTitle>{data.title}</MDBCardTitle>
                                         <MDBCardText>
-                                        {data.meta_content.slice(0, -170)}...
+                                        {data.meta_content.slice(0, 110)}...
                                         </MDBCardText>
                                         <div className="">
                                             <NavLink exact to={`/blog/${data._id}/${data.slug.replace(/\s+/g,'-')}`}>
