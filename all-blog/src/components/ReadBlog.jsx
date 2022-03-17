@@ -5,8 +5,7 @@ import {useParams} from "react-router-dom";
 import {
     MDBBtn,
     MDBContainer,
-    MDBTooltip, MDBModal,MDBModalDialog,
-    MDBModalContent,MDBModalHeader,MDBModalTitle,MDBModalBody,MDBModalFooter
+    MDBTooltip
   } from 'mdb-react-ui-kit';
 
 import { GrLinkPrevious  } from "react-icons/gr";
@@ -20,7 +19,6 @@ import {  AiOutlineDelete, AiOutlineEdit  } from "react-icons/ai";
 const ReadBlog=()=>{
 
     const {id} = useParams();
-    const [deleteModal, setDeleteModal] = useState(false);
     const [post, setPost] = useState();
     const [allcomment, setAllComment] = useState([]);
     const [comment, setComment] = useState();
@@ -34,18 +32,7 @@ const ReadBlog=()=>{
 
 
     
-    const deleteShowOpen = (idx, id) =>{
-        setDeleteModal(true);
-        setCIndex(idx);
-        setCommentId(id);
-        // setid(id);
-        // setIdx(idx);
-    } 
-
-    const deleteShowClose=()=>{
-        setDeleteModal(false);
-    }
-
+   
 
     useEffect(()=>{
 
@@ -70,6 +57,23 @@ const ReadBlog=()=>{
     },[id])
 
 
+    const getPost = async() =>{
+        try {
+            let posts = await axios.get(`/post/getpostbytitle?_id=${id}`);
+            let user = await axios.get('/user/currentuser');
+            setUser(user.data);
+            setAllComment(posts.data.comments);
+            setPost(posts.data);
+            setLoading(false);
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+       
+    }
+
+
     const addComments = async(id, e) =>{
         e.preventDefault();
 
@@ -83,6 +87,7 @@ const ReadBlog=()=>{
                 return [addcomment.data, ...preval]
             });
             setComment("");
+            getPost();
 
         } catch (error) {
             console.log(error);
@@ -124,12 +129,12 @@ const ReadBlog=()=>{
     }
 
 
-    const DeleteCommentLink=async()=>{
+    const DeleteCommentLink=async(idx, cid)=>{
         setAllComment(data=>data.filter((val, id)=>{
-            return cindex!==id;
+            return idx!==id;
         }))
-        setDeleteModal(false);
-        await axios.delete(`/comment/deletecomment/${commentId}/${post._id}`);
+        await axios.delete(`/comment/deletecomment/${cid}/${post._id}`);
+        
 
     }
 
@@ -165,7 +170,7 @@ const ReadBlog=()=>{
                                     </>
                                 ):(
                                     <>
-                                    <NavLink exact to="/profile">
+                                     <NavLink exact to={`/profile/${post.user._id}/${post.user.username}`}>
                                         <h5 className="my-2 mx-2">{post.user.username}</h5>
                                     </NavLink>
                                     </>
@@ -236,7 +241,7 @@ const ReadBlog=()=>{
                                                </>
                                            ):(
                                                <>
-                                                    <NavLink exact to="/profile">
+                                                    <NavLink exact to={`/profile/${data.user._id}/${data.user.username}`}>
                                                     <span className="mx-2">{data.user.username?data.user.username:user.username}</span>
                                                     </NavLink>
                                                </>
@@ -252,25 +257,8 @@ const ReadBlog=()=>{
                                                 </MDBTooltip>
                                                 <MDBTooltip tag='a' className='text-dark' title="Delete">
                                                     {' '}
-                                                    <AiOutlineDelete onClick={()=>deleteShowOpen(idx, data._id)}  className="mx-2 cursur" size={"1.5rem"}/>
-                                                    <MDBModal show={deleteModal} setShow={setDeleteModal} tabIndex='-1'>
-                                                    <MDBModalDialog>
-                                                    <MDBModalContent>
-                                                        <MDBModalHeader>
-                                                        <MDBModalTitle>Delete Comment</MDBModalTitle>
-                                                        <MDBBtn className='btn-close' color='none' onClick={deleteShowClose}></MDBBtn>
-                                                        </MDBModalHeader>
-                                                        <MDBModalBody>Are You Sure Want To Delete This.</MDBModalBody>
+                                                    <AiOutlineDelete onClick={()=>DeleteCommentLink(idx, data._id)}  className="mx-2 cursur" size={"1.5rem"}/>
 
-                                                        <MDBModalFooter>
-                                                        <MDBBtn color='secondary' onClick={deleteShowClose}>
-                                                            Close
-                                                        </MDBBtn>
-                                                        <MDBBtn onClick={DeleteCommentLink}>Delete</MDBBtn>
-                                                        </MDBModalFooter>
-                                                    </MDBModalContent>
-                                                    </MDBModalDialog>
-                                                </MDBModal>
                                                 </MDBTooltip>
 
                                                </div>

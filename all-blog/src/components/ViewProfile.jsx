@@ -1,10 +1,11 @@
 import axios from "axios";
+import {useParams} from "react-router-dom";
+
 import {
-    MDBContainer, MDBBtn 
+    MDBContainer 
   } from 'mdb-react-ui-kit';
-import { MDBCard, MDBCardTitle, MDBTooltip, MDBCardFooter, MDBCardText, 
-    MDBCardBody, MDBCardImage, MDBRow, MDBCol, MDBModal,MDBModalDialog,
-    MDBModalContent,MDBModalHeader,MDBModalTitle,MDBModalBody,MDBModalFooter,
+import { MDBCard, MDBCardTitle, MDBCardFooter, MDBCardText, 
+    MDBCardBody, MDBCardImage, MDBRow, MDBCol
 } from 'mdb-react-ui-kit';
 import React,{ useEffect, useState } from "react";
 import Navigation from "./Navigation";
@@ -13,10 +14,9 @@ import { AiOutlineHeart  } from "react-icons/ai";
 import { BiComment  } from "react-icons/bi";
 import { IoIosSchool  } from "react-icons/io";
 import { MdLocationPin  } from "react-icons/md";
-import {  AiOutlineInstagram, AiOutlineDelete,  AiOutlineEdit, AiFillHeart, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
+import {  AiOutlineInstagram,  AiFillHeart, AiOutlineTwitter, AiFillFacebook, AiFillLinkedin  } from "react-icons/ai";
 import {  RiUserFollowFill  } from "react-icons/ri";
 import {  CgMoreO  } from "react-icons/cg";
-import {  GrFormAdd  } from "react-icons/gr";
 import {  BsFillFileEarmarkPostFill  } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
@@ -26,12 +26,12 @@ import { Audio } from  'react-loader-spinner'
 
 // AiOutlineHeart BiComment AiOutlineDelete, AiOutlineEdit
 
-const Profile=()=>{
-
+const ViewProfile=()=>{
+    const {id} = useParams();
+    const [currentId, setCurrentId] = useState();
     const [user, setUser] = useState();
-    const [deleteModal, setDeleteModal] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [username, setUserName] = useState();
+    const [usernames, setUserName] = useState();
     const [posts, setPosts] = useState([]);
     const [location, setLocation] = useState();
     const [following, setFollowing] = useState([]);
@@ -44,28 +44,18 @@ const Profile=()=>{
     const [linkedIn, setLinkedIn] =  useState();
     const [facebook, setFacebook] = useState();
     const [twitter, setTwitter] = useState();
-    const [idx, setIdx] = useState();
-    const [id, setid] = useState();
 
-
-    const deleteShowOpen = (idx, id) =>{
-        setDeleteModal(true);
-        setid(id);
-        setIdx(idx);
-    } 
-
-    const deleteShowClose=()=>{
-        setDeleteModal(false);
-    }
 
 
     useEffect(()=>{
         
         const getUser = async()=>{
             setLoading(true);
-            let users = await axios.get("/user/currentuser");
-            let allposts = await axios.get("/post/allcurrentuserpost");
+            let currentuser = await axios.get("/user/currentuser");
+            let users = await axios.get(`/user/getuserbyid/${id}`);
+            let allposts = await axios.get(`/post/getUserPostsById/${id}`);
             setPosts(allposts.data);
+            setCurrentId(currentuser.data._id);
             setFollowers(users.data.followers);
             setFollowing(users.data.following);
             setUser(users.data); 
@@ -83,12 +73,14 @@ const Profile=()=>{
         }
         getUser();
 
-    },[])
+    },[id])
 
 
     const getUser = async()=>{
-        let users = await axios.get("/user/currentuser");
-        let allposts = await axios.get("/post/allpost");
+        let currentuser = await axios.get("/user/currentuser");
+        let users = await axios.get(`/user/getuserbyid/${id}`);
+        let allposts = await axios.get(`/post/getUserPostsById/${id}`);
+        setCurrentId(currentuser.data._id);
         setPosts(allposts.data);
         setFollowers(users.data.followers);
         setFollowing(users.data.following);
@@ -103,18 +95,6 @@ const Profile=()=>{
         setFacebook(users.data.facebook_link);
         setTwitter(users.data.twitter_link)
         setEducation(users.data.education);
-    }
-
-
-
-    const deletePost = async()=>{
-        setPosts((posts)=>
-            posts.filter((data, index)=>{
-                return index !== idx;
-
-            }))
-            await axios.delete(`/userpost/delete/${id}`);
-        setDeleteModal(false);
     }
 
 
@@ -182,7 +162,7 @@ const Profile=()=>{
         <div className="user-information">
             {user?(
                 <>
-                <h3 className="text-center">{username}</h3>
+                <h3 className="text-center">{usernames}</h3>
 
                 </>
             ):(
@@ -320,16 +300,7 @@ const Profile=()=>{
 
         {/* bloging */}
         <hr className="w-75 mx-auto" />
-        <div className="bloging">
-            <MDBContainer className="my-3">
-                <div className="text-center">
-                    <NavLink exact to="/addpost">
-                        <MDBBtn><GrFormAdd size={"1.6rem"} className="text-white"/> Add Posts</MDBBtn>
-                    </NavLink>
-                </div>
-            </MDBContainer>
-        </div>
-
+       
 
         {/* post cards */}
         <MDBContainer className="my-4">
@@ -360,51 +331,12 @@ const Profile=()=>{
                                             readmore
                                             </NavLink>
                                         </div>
-                                        {/* action buttons */}
-                                        {user._id === data.user?(
-                                            <>
-                                            <div className="action-buttons my-3 float-lg-end cursur">
-                                               <MDBTooltip tag='a' className='text-dark' title="Edit">
-                                                    {' '}
-                                                    <NavLink exact to={`/editpost/${data._id}/${data.slug.replace(/\s+/g,'-')}`}>
-                                                        <AiOutlineEdit className="mx-2 text-dark" size={"1.3rem"}/>
-                                                    </NavLink>
-                                                </MDBTooltip>
-                                                <MDBTooltip tag='a' className='text-dark' title="Delete">
-                                                   <AiOutlineDelete onClick={()=>deleteShowOpen(idx, data._id)} className="mx-2" size={"1.3rem"}/>
-                                                   <MDBModal show={deleteModal} setShow={setDeleteModal} tabIndex='-1'>
-                                                    <MDBModalDialog>
-                                                    <MDBModalContent>
-                                                        <MDBModalHeader>
-                                                        <MDBModalTitle>Delete Blog</MDBModalTitle>
-                                                        <MDBBtn className='btn-close' color='none' onClick={deleteShowClose}></MDBBtn>
-                                                        </MDBModalHeader>
-                                                        <MDBModalBody>Are You Sure Want To Delete This.</MDBModalBody>
-
-                                                        <MDBModalFooter>
-                                                        <MDBBtn color='secondary' onClick={deleteShowClose}>
-                                                            Close
-                                                        </MDBBtn>
-                                                        <MDBBtn onClick={deletePost}>Delete</MDBBtn>
-                                                        </MDBModalFooter>
-                                                    </MDBModalContent>
-                                                    </MDBModalDialog>
-                                                </MDBModal>
-                                                </MDBTooltip>
-
-
-                                            </div>
-                                            </>
-                                        ):(
-                                            <>
-                                            </>
-                                        )}
                                     </MDBCardBody>
                                     <MDBCardFooter>
                                         <div className='text-muted card-footer-section'>
                                             <div className="icons">
                                                 <div className="like">
-                                                    {data.likes.includes(user._id)?(
+                                                    {data.likes.includes(currentId)?(
                                                         <>
                                                         <AiFillHeart onClick={()=>unLike(data._id)}  size={"1.5rem"} className="mx-2 pink cursur"/>
                                                         <p className="text-center">{data.likes?data.likes.length:0}</p>
@@ -450,4 +382,4 @@ const Profile=()=>{
     )
 }
 
-export default Profile;
+export default ViewProfile;

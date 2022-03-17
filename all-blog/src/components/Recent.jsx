@@ -37,12 +37,10 @@ const Recent=()=>{
 
 
     const getRecentData=async()=>{
-        setLoading(true);
         let {data} = await axios.get(`/post/getAllRecentPosts`);
         let users = await axios.get("/user/currentuser");
         setUser(users.data);
         setPosts(data);
-        setLoading(false);
 
     }
 
@@ -63,7 +61,7 @@ const Recent=()=>{
                 return index !== idx;
 
             }))
-            await axios.delete(`/userpost/delete/${id}`);
+            await axios.delete(`/post/delete/${id}`);
         setDeleteModal(false);
     }
 
@@ -102,12 +100,16 @@ const Recent=()=>{
         <>
         {loading?(
             <>
+            <div className="home-text-center-spinner">
                 <Audio
                     height="100"
                     width="100"
                     color='grey'
                     ariaLabel='loading'
                     />
+
+            </div>
+                
             </>
         ):(
             <>
@@ -131,6 +133,22 @@ const Recent=()=>{
                                             position='top'
                                         />
                                         <MDBCardBody>
+                                            <div className="post-user-info my-3">
+                                                <img className="profile-pic-small" src={data.user.profile_pic?data.user.profile_pic:process.env.PUBLIC_URL+"profile.jpg"} alt="" />
+                                                {user._id === data.user._id?(
+                                                    <>
+                                                    <NavLink exact to="/profile">
+                                                       <h5 className="my-2 mx-2">{data.user.username}</h5>
+                                                    </NavLink>
+                                                    </>
+                                                ):(
+                                                    <>
+                                                    <NavLink exact to={`/profile/${data.user._id}/${data.user.username}`}>
+                                                        <h5 className="my-2 mx-2">{data.user.username}</h5>
+                                                    </NavLink>
+                                                    </>
+                                                )}
+                                            </div>
                                             <MDBCardTitle>{data.title}</MDBCardTitle>
                                             <MDBCardText>
                                             {data.meta_content.slice(0, 110)}...
@@ -141,7 +159,7 @@ const Recent=()=>{
                                                 </NavLink>
                                             </div>
                                             {/* action buttons */}
-                                            {user._id === data.user?(
+                                            {user._id === data.user._id?(
                                                 <>
                                                 <div className="action-buttons my-3 float-lg-end cursur">
                                                 <MDBTooltip tag='a' className='text-dark' title="Edit">

@@ -106,3 +106,17 @@ exports.currentUser=async(req, res)=>{
         
     }
 }
+
+// get user by id
+exports.getUserById = async(req, res)=>{
+    let {user_id} = req.params;
+
+    try {
+        const userdata = await userModel.findById({_id:user_id});
+        res.status(200).send(userdata);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}

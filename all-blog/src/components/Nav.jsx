@@ -13,6 +13,7 @@ import Logout from "./Logout";
 import AddPost from "./AddPost";
 import ReadBlog from "./ReadBlog";
 import EditPost from "./EditPost";
+import ViewProfile from "./ViewProfile";
 
 const Nav = () =>{
     const {state, dispatch} = useContext(LoginContext);
@@ -46,6 +47,7 @@ const Nav = () =>{
                 <Route path="" exact element={<Home/>}/>
                 <Route path="profile" exact element={<Profile/>}/>
                 <Route path="setting" exact element={<Setting/>}/>
+                <Route path ="profile/:id/:username" exact element={<ViewProfile/>}/>
                 <Route path="editpost/:id/:slug" exact element={<EditPost/>}/>
                 <Route path="logout" exact element={<Logout/>}/>
                 <Route path="addpost" exact element={<AddPost/>}/>

@@ -18,6 +18,8 @@ const commentRoute = require('./routes/commentRoute');
 
 const likeRoute = require('./routes/likesRoute');
 
+const followerRoute = require('./routes/followerRoute');
+
 
 //importing cors
 const cors = require('cors');
@@ -48,6 +50,7 @@ app.use("/post", postRoute);
 app.use("/user", userRoute);
 app.use("/comment", commentRoute);
 app.use("/like", likeRoute);
+app.use("/follow", followerRoute)
 
 app.get("/", (req, res)=>{
     res.send("hello shreyas")

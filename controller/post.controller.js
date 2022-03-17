@@ -96,13 +96,27 @@ exports.updatePost = async(req, res)=>{
 }
 
 
+// get user post by id
+exports.getUserPostsById=async(req, res)=>{
+
+    let {id} = req.params;
+
+    try {
+
+        const userdata = await postModel.find({user:id}).sort({postDateUpdate:-1});;
+        res.status(200).send(userdata);
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 // getAllRecentPosts
 exports.getAllRecentPosts=async(req, res)=>{
 
     try {
-        const allposts = await postModel.find().sort({postDateUpdate:-1});
+        const allposts = await postModel.find().populate('user').sort({postDateUpdate:-1});
         res.status(200).send(allposts);
         
     } catch (error) {
@@ -115,7 +129,7 @@ exports.getAllRecentPosts=async(req, res)=>{
 
 // getall usersPost
 
-exports.getAllPosts=async(req, res)=>{
+exports.getAllCurrentUserPosts=async(req, res)=>{
 
     try {
         let user_id = req.name.id;

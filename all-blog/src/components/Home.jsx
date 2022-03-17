@@ -28,7 +28,7 @@ const Home = () =>{
     return(
         <>
         <Navigation/>
-        <div className="background-image-home" style={{backgroundImage: "url(/creativity.png)"}}>
+        <div className="background-image-home" style={{backgroundImage: "url(/blacktheme.jpg)"}}>
             <h2 className="text-center big-text text-capitalize pt-5">4 ways group can stifle creativity</h2>
         </div>
         <MDBTabs fill  className='mb-3 bg-info '>

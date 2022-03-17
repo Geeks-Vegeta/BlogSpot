@@ -15,6 +15,7 @@ userRoute.put("/updateprofile", verifyUser, userController.userUpdateProfile);
 userRoute.get("/alluser", userController.allUsers);
 userRoute.delete("/deleteuser/:user_id", userController.deleteUser);
 userRoute.get("/getUserId",verifyUser, userController.getUserId);
+userRoute.get("/getuserbyid/:user_id", userController.getUserById);
 userRoute.get("/currentuser",verifyUser, userController.currentUser);
 module.exports=userRoute;
 

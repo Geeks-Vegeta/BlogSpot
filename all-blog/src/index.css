@@ -175,14 +175,23 @@ pre{
 }
 
 .background-image{
-  height: 20rem;
-  background-position: center;
+  height: 25rem;
+  background-position: center; 
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-size: cover;
 }
 
 .big-text{
   font-size: 3rem;
+}
+
+.post-user-info{
+  display: flex;
+}
+
+.profile-pic-small{
+  width: 3rem;
+  height: 3rem;
 }
 
 .background-image-home{
@@ -227,6 +236,7 @@ pre{
 .pink{
   color: #d61031;
 }
+
 
 /* for media of mobile */
 
