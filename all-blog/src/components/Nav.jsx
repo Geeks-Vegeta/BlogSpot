@@ -14,6 +14,8 @@ import AddPost from "./AddPost";
 import ReadBlog from "./ReadBlog";
 import EditPost from "./EditPost";
 import ViewProfile from "./ViewProfile";
+import PasswordReset from "./PasswordReset";
+import VerifyToken from "./VerifyToken";
 
 const Nav = () =>{
     const {state, dispatch} = useContext(LoginContext);
@@ -29,7 +31,7 @@ const Nav = () =>{
                 dispatch({type:"isLogin", payload:true})
             }
             else{
-                navigate("login")
+                navigate("login");
                 dispatch({type:"isLogin", payload:false})
 
             }
@@ -50,6 +52,7 @@ const Nav = () =>{
                 <Route path ="profile/:id/:username" exact element={<ViewProfile/>}/>
                 <Route path="editpost/:id/:slug" exact element={<EditPost/>}/>
                 <Route path="logout" exact element={<Logout/>}/>
+                <Route exact path="resetpassword" element={<PasswordReset/>}/>
                 <Route path="addpost" exact element={<AddPost/>}/>
                 <Route path="blog/:id/:slug" exact element={<ReadBlog/>}/>
                 <Route path="*" exact element={<Error/>}/>
@@ -57,10 +60,11 @@ const Nav = () =>{
                </>
            ):(
                <>
-               
-                <Route exact path="login" element={<Login/>}/>
+                <Route exact path="login" element={<Login/> }/>
+                <Route exact path="/verifyotp" element={<VerifyToken/>}/>
                 <Route exact path="register" element={<Register/>}/>
                 <Route exact path="forgot" element={<Forgot/>}/>
+                <Route exact path="resetpassword" element={<PasswordReset/>}/>
                 <Route path="*" exact element={<Error/>}/>
                </>
            )}

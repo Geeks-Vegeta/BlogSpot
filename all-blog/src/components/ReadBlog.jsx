@@ -233,7 +233,7 @@ const ReadBlog=()=>{
                                        <hr />
                                        <div className="comment-by-user">
                                            <img className="profile-pic-small" src={data.user.profile_pic?data.user.profile_pic:user.profile_pic} alt="" />
-                                           {user._id === data.user._id && user._id === data.user?(
+                                           {user._id === data.user._id?(
                                                <>
                                                     <NavLink exact to="/profile">
                                                     <span className="mx-2">{data.user.username?data.user.username:user.username}</span>

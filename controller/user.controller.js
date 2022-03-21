@@ -1,5 +1,7 @@
 const userModel = require('../models/userModel');
 
+const bcrypt = require('bcryptjs');
+
 
 // userupdate profile
 exports.userUpdateProfile = async (req, res)=>{
@@ -91,6 +93,32 @@ exports.deleteUser=async(req, res)=>{
 } 
 
 
+
+// update userpassword
+exports.changeUserPassword=async(req, res)=>{
+
+    let user = req.session.user;
+    let {password} = req.body;
+
+    try {
+
+        const loginuser = await userModel.findOne({email:user});
+        
+        if(!loginuser) return res.status(401).json({"message": "Invalid user"})
+        
+        let salt = await bcrypt.genSaltSync(13);
+        let hashpassword = await bcrypt.hash(password ,salt)
+
+        await userModel.findByIdAndUpdate({_id:loginuser._id}, {$set:{password:hashpassword}});
+        res.status(200).json({"message": "Password Changed Successfully"});
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
+
+
 // get current user
 exports.currentUser=async(req, res)=>{
 
@@ -98,7 +126,7 @@ exports.currentUser=async(req, res)=>{
 
     try {
         
-        const user = await userModel.findOne({_id:user_id});
+        const user = await userModel.findOne({_id:user_id}, '-password').populate('followers', '_id profile_pic username following followers', 'User').populate('following', '_id profile_pic username', 'User');
         res.status(200).send(user);
 
     } catch (error) {

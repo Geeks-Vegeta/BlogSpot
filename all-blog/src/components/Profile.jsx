@@ -46,6 +46,11 @@ const Profile=()=>{
     const [twitter, setTwitter] = useState();
     const [idx, setIdx] = useState();
     const [id, setid] = useState();
+    const [followingModal, setFollowingModal] = useState(false);
+    const [followerModal, setFollowerModal] = useState(false);
+
+    const followingShow = () => setFollowingModal(!followingModal);
+    const followerShow = () => setFollowerModal(!followerModal)
 
 
     const deleteShowOpen = (idx, id) =>{
@@ -88,7 +93,7 @@ const Profile=()=>{
 
     const getUser = async()=>{
         let users = await axios.get("/user/currentuser");
-        let allposts = await axios.get("/post/allpost");
+        let allposts = await axios.get("/post/allcurrentuserpost");
         setPosts(allposts.data);
         setFollowers(users.data.followers);
         setFollowing(users.data.following);
@@ -103,6 +108,22 @@ const Profile=()=>{
         setFacebook(users.data.facebook_link);
         setTwitter(users.data.twitter_link)
         setEducation(users.data.education);
+    }
+
+
+
+    const follow = async(user_id)=>{
+        await axios.put(`/follow/${user_id}`);
+        getUser();
+    }
+
+
+    const unfollow=async(user_id, idx)=>{
+        setFollowing(data=>data.filter((val,id)=>{
+           return idx!==id;
+       }))
+        await axios.put(`/follow/unfollow/${user_id}`);
+        getUser();
     }
 
 
@@ -286,10 +307,50 @@ const Profile=()=>{
                 <p>{posts ? posts.length:0} posts</p>
             </div>
             <div className="followers cursur text-center">
-                <FaUserFriends  size={"1.3rem"}/>
+                <FaUserFriends onClick={followerShow} size={"1.3rem"}/>
                 {followers?(
                     <>
-                    <p>{followers.length} followers</p>
+                    <p onClick={followerShow}>{followers.length} followers</p>
+                        <MDBModal show={followerModal} setShow={setFollowerModal} tabIndex='-1'>
+                        <MDBModalDialog scrollable>
+                            <MDBModalContent>
+                            <MDBModalHeader>
+                                <MDBModalTitle>Followers</MDBModalTitle>
+                                <MDBBtn className='btn-close' color='none' onClick={followerShow}></MDBBtn>
+                            </MDBModalHeader>
+                            <MDBModalBody>
+                            {followers.map((data, idx)=>{
+                                    return (
+                                        <>
+                                        <div key={idx} className="flex-following">
+                                            <div className="name-pic">
+                                                <img className="profile-pic-small" src={data.profile_pic} alt="" />
+                                                <a href={`/profile/${data._id}/${data.username}`}>
+                                                   <span onClick={()=>followerShow} className="mx-2">{data.username}</span>
+                                                </a>
+                                            </div>
+                                            {data.followers.includes(user._id)?(
+                                                <>
+                                                    {/* <button className="follow-btn-following mx-1">Unfollow</button> */}
+                                                </>
+                                            ):(
+                                                <>
+                                                    <button onClick={()=>follow(data._id)} className="follow-btn-following mx-1">follow</button>
+                                                </>
+                                            )}
+                                        </div>
+                                        <hr />
+                                        </>
+                                    )
+                                })}
+                           
+                            </MDBModalBody>
+
+                    
+                    </MDBModalContent>
+                    
+                </MDBModalDialog>
+                </MDBModal>
 
                     </>
                 ):(
@@ -298,10 +359,43 @@ const Profile=()=>{
                 )}
             </div>
             <div className="following cursur text-center">
-                <RiUserFollowFill size={"1.3rem"}/>
+                <RiUserFollowFill  onClick={followingShow} size={"1.3rem"}/>
                 {following?(
                     <>
-                       <p>{following.length} following</p>
+                       <p onClick={followingShow}>{following.length} following</p>
+                        <MDBModal show={followingModal} setShow={setFollowingModal} tabIndex='-1'>
+                        <MDBModalDialog scrollable>
+                            <MDBModalContent>
+                            <MDBModalHeader>
+                                <MDBModalTitle>Following</MDBModalTitle>
+                                <MDBBtn className='btn-close' color='none' onClick={followingShow}></MDBBtn>
+                            </MDBModalHeader>
+                            <MDBModalBody>
+                                {following.map((data, idx)=>{
+                                    return (
+                                        <>
+                                        <div key={idx} className="flex-following">
+                                            <div className="name-pic">
+                                                <img className="profile-pic-small" src={data.profile_pic} alt="" />
+                                                <a href={`/profile/${data._id}/${data.username}`}>
+                                                <span className="mx-2">{data.username}</span>
+                                                </a>
+                                            </div>
+                                            <button onClick={()=>unfollow(data._id, idx)} className="follow-btn-following mx-1">Unfollow</button>
+                                        </div>
+                                        <hr />
+                                            
+
+                                        </>
+                                    )
+                                })}
+                      
+                            </MDBModalBody>
+
+                            
+                            </MDBModalContent>
+                        </MDBModalDialog>
+                        </MDBModal>
                     </>
                 ):(
                     <>

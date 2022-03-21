@@ -1,5 +1,6 @@
 import React ,{ useState } from "react";
 import Navigation from "./Navigation";
+
 import {
     MDBTabs,
     MDBTabsItem,
@@ -7,6 +8,7 @@ import {
     MDBTabsContent,
     MDBTabsPane
   } from 'mdb-react-ui-kit';
+
 import Recent from "./Recent";
 import Popular from "./Popular";
 import Liked from "./Liked";
@@ -16,7 +18,7 @@ import Liked from "./Liked";
 const Home = () =>{
 
     const [basicActive, setBasicActive] = useState('recent');
-
+   
     const handleBasicClick = (value) => {
       if (value === basicActive) {
         return;

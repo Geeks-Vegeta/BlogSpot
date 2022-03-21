@@ -43,6 +43,7 @@ const ViewProfile=()=>{
     const [instagram , setInstagram] = useState();
     const [linkedIn, setLinkedIn] =  useState();
     const [facebook, setFacebook] = useState();
+    const [isFollow, setFollow] = useState(true);
     const [twitter, setTwitter] = useState();
 
 
@@ -95,6 +96,18 @@ const ViewProfile=()=>{
         setFacebook(users.data.facebook_link);
         setTwitter(users.data.twitter_link)
         setEducation(users.data.education);
+    }
+
+
+
+    const follow = async(user_id)=>{
+        await axios.put(`/follow/${user_id}`);
+        getUser();
+    }
+
+    const unfollow = async(user_id)=>{
+        await axios.put(`/follow/unfollow/${user_id}`);
+        getUser();
     }
 
 
@@ -162,7 +175,21 @@ const ViewProfile=()=>{
         <div className="user-information">
             {user?(
                 <>
-                <h3 className="text-center">{usernames}</h3>
+                <div className="text-center mx-auto">
+                    <div className="flex-name">
+                       <h5 className="mx-1">{usernames}</h5>
+                       {followers.includes(currentId)?(
+                           <>
+                            <button className="follow-btn mx-1" onClick={()=>unfollow(user._id)}>Unfollow</button>
+                           </>
+                       ):(
+                           <>
+                            <button className="follow-btn-follow mx-1" onClick={()=>follow(user._id)}>follow</button>
+                           </>
+                       )}
+                    </div>
+
+                </div>
 
                 </>
             ):(
@@ -184,35 +211,39 @@ const ViewProfile=()=>{
             )}
 
         </div>
+        <MDBContainer className="my-2">
+        <div className="w-50 text-center mx-auto">
+            <div className="flex-info">
+                {/* address and bout */}
+                {location?(
+                    <>
+                        <p><MdLocationPin/> {location}</p>
+                    </>
+                ):(
+                    <>
+                    </>
+                )}
 
-        {/* address and bout */}
-        {location?(
-            <>
-            <MDBContainer className="my-3">
-                <p className="text-center"><MdLocationPin/> {location}</p>
-            </MDBContainer>
-            </>
-        ):(
-            <>
-            </>
-        )}
+                {/* education */}
 
-        {/* education */}
+                {education?(
+                    <>
+                        <p><IoIosSchool/> {education}</p>
+                    </>
+                ):(
+                    <>
+                    </>
+                )}
+            
 
-        {education?(
-            <>
-            <MDBContainer className="my-3">
-                <p className="text-center"><IoIosSchool/> {education}</p>
-            </MDBContainer>
-            </>
-        ):(
-            <>
-            </>
-        )}
+            </div>
+        </div>
+        </MDBContainer>
+       
        
 
          {/* social media */}
-         <MDBContainer className="my-3">
+         <MDBContainer className="my-2">
             <div className="social-media-icons text-center">
                 <div className="flex-media">
                     {instagram?(

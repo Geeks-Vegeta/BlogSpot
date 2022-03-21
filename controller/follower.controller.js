@@ -1,6 +1,6 @@
 
 const userModel = require('../models/userModel');
-
+const mongoose = require('mongoose');
 
 exports.followeruser = async(req, res)=>{
 
@@ -18,9 +18,9 @@ exports.followeruser = async(req, res)=>{
         if(!userfollow) return res.status(404).json({"message": "no user found"});
         if(!userwhofollow) return res.status(404).json({"message": "no user found"});
 
-
-        await userfollow.followers.push(id);
-        await userwhofollow.follwing.push(user_id);
+        // mongoose.Types.ObjectId
+        await userfollow.following.push(mongoose.Types.ObjectId(id));
+        await userwhofollow.followers.push(mongoose.Types.ObjectId(user_id));
         await userfollow.save();
         await userwhofollow.save();
         res.status(200).send("followed successfully");
@@ -39,20 +39,13 @@ exports.unfollowuser = async(req, res)=>{
     
     try {
 
-        let  userfollowlist = [] ;
-
         let user = await userModel.findOne({_id:user_id});
         if(!user) return res.status(404).json({"message": "no user found"});
 
-        userfollowlist.append(user.followers);
-
-        let isuserfollow = userfollowlist.includes(id);
-
-        if(isuserfollow){
-            await userModel.findByIdAndUpdate({_id:user_id}, {$pull:{}})
-
-        }else return res.status(400).json({"message": "unable to unfollow"});
-        
+        await userModel.findByIdAndUpdate({_id:user_id}, {$pull:{following:mongoose.Types.ObjectId(id)}});
+        await userModel.findByIdAndUpdate({_id:id}, {$pull:{followers:mongoose.Types.ObjectId(user_id)}});
+        res.status(200).json({"message": "Follower removed successfully"});
+       
     } catch (error) {
         console.log(error)
         
