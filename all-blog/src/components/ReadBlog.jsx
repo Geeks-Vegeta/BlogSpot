@@ -14,11 +14,12 @@ import { Audio } from  'react-loader-spinner'
 import ReactHtmlParser from 'react-html-parser'; //converting react to html
 import moment from "moment";
 import {  AiOutlineDelete, AiOutlineEdit  } from "react-icons/ai";
+import {Helmet} from "react-helmet";
 
 
 const ReadBlog=()=>{
 
-    const {id} = useParams();
+    const {id, slug} = useParams();
     const [post, setPost] = useState();
     const [allcomment, setAllComment] = useState([]);
     const [comment, setComment] = useState();
@@ -154,6 +155,11 @@ const ReadBlog=()=>{
             </>
         ):(
             <>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>{slug}</title>
+                </Helmet>
+
                 <MDBContainer className="my-5">
                 <GrLinkPrevious className="cursur mb-5" size={"1.5rem"} onClick={() => navigate(-1)}/>
                     
@@ -241,7 +247,7 @@ const ReadBlog=()=>{
                                                </>
                                            ):(
                                                <>
-                                                    <NavLink exact to={`/profile/${data.user._id}/${data.user.username}`}>
+                                                    <NavLink exact to={`/profile/${data.user._id}/${data.user.username.replace(/\s+/g,'-')}`}>
                                                     <span className="mx-2">{data.user.username?data.user.username:user.username}</span>
                                                     </NavLink>
                                                </>

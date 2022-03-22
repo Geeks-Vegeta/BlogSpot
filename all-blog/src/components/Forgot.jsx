@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify'; //importing react toastify to show error message
 import 'react-toastify/dist/ReactToastify.css'; //importing toastify css file
+import {Helmet} from "react-helmet";
 
 
 const Forgot = () =>{
@@ -47,6 +48,10 @@ const Forgot = () =>{
 
     return (
         <>
+         <Helmet>
+                <meta charSet="utf-8" />
+                <title>BlogSpot - Forgot Password</title>
+            </Helmet>
        <MDBContainer>
        <h5 className="m-4">BlogSpot</h5>
 

@@ -8,6 +8,7 @@ import { GrLinkPrevious  } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Audio } from  'react-loader-spinner'
+import {Helmet} from "react-helmet";
 
 
 const Setting = () =>{
@@ -156,7 +157,10 @@ const Setting = () =>{
             </>
         ):(
             <>
-           
+               <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Settings</title>
+                </Helmet>
         <Navigation/>
         <MDBContainer className="my-5">
             <GrLinkPrevious className="cursur mb-5" size={"1.5rem"} onClick={() => navigate(-1)}/>

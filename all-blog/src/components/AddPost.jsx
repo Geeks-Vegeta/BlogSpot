@@ -13,6 +13,8 @@ import ReactHtmlParser from 'react-html-parser'; //converting react to html
 import { GrLinkPrevious  } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {Helmet} from "react-helmet";
+
 
 const AddPost=()=>{
     const [text, setText] = useState();
@@ -83,6 +85,10 @@ const AddPost=()=>{
 
     return (
         <>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Add Post</title>
+                </Helmet>
         <Navigation/>
         <MDBContainer className="my-5">
             <GrLinkPrevious className="cursur mb-5" size={"1.5rem"} onClick={() => navigate(-1)}/>

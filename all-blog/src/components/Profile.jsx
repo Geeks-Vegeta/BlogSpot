@@ -21,6 +21,7 @@ import {  BsFillFileEarmarkPostFill  } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 import { Audio } from  'react-loader-spinner'
+import {Helmet} from "react-helmet";
 
 
 
@@ -171,6 +172,7 @@ const Profile=()=>{
 
     return(
         <>
+           
         {loading?(
             <>
                 <div className="loading-center">
@@ -184,6 +186,18 @@ const Profile=()=>{
             </>
         ):(
             <>
+            {user?(
+                <>
+                <Helmet>
+                <meta charSet="utf-8" />
+                <title>{user.username}</title>
+                </Helmet>
+                </>
+            ):(
+                <>
+                </>
+            )}
+            
         <Navigation/>
         {background?(
             <>
@@ -325,7 +339,7 @@ const Profile=()=>{
                                         <div key={idx} className="flex-following">
                                             <div className="name-pic">
                                                 <img className="profile-pic-small" src={data.profile_pic} alt="" />
-                                                <a href={`/profile/${data._id}/${data.username}`}>
+                                                <a href={`/profile/${data._id}/${data.username.replace(/\s+/g,'-')}`}>
                                                    <span onClick={()=>followerShow} className="mx-2">{data.username}</span>
                                                 </a>
                                             </div>
@@ -377,7 +391,7 @@ const Profile=()=>{
                                         <div key={idx} className="flex-following">
                                             <div className="name-pic">
                                                 <img className="profile-pic-small" src={data.profile_pic} alt="" />
-                                                <a href={`/profile/${data._id}/${data.username}`}>
+                                                <a href={`/profile/${data._id}/${data.username.replace(/\s+/g,'-')}`}>
                                                 <span className="mx-2">{data.username}</span>
                                                 </a>
                                             </div>

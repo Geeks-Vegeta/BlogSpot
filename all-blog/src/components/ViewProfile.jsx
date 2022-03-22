@@ -21,13 +21,14 @@ import {  BsFillFileEarmarkPostFill  } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 import { Audio } from  'react-loader-spinner'
+import {Helmet} from "react-helmet";
 
 
 
 // AiOutlineHeart BiComment AiOutlineDelete, AiOutlineEdit
 
 const ViewProfile=()=>{
-    const {id} = useParams();
+    const {id, username} = useParams();
     const [currentId, setCurrentId] = useState();
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(false);
@@ -156,6 +157,10 @@ const ViewProfile=()=>{
             </>
         ):(
             <>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>{username}</title>
+                </Helmet>
         <Navigation/>
         {background?(
             <>

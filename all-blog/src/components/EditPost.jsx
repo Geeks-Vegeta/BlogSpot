@@ -17,6 +17,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify'; //importing react toastify to show error message
 import 'react-toastify/dist/ReactToastify.css'; //importing toastify css file
+import {Helmet} from "react-helmet";
+
 
 const EditPost=()=>{
     const [text, setText] = useState();
@@ -145,6 +147,10 @@ const EditPost=()=>{
             </>
         ):(
             <>
+               <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Edit Post</title>
+                </Helmet>
         <Navigation/>
         <MDBContainer className="my-5">
             <GrLinkPrevious className="cursur mb-5" size={"1.5rem"} onClick={() => navigate(-1)}/>

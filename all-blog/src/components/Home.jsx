@@ -1,5 +1,6 @@
 import React ,{ useState } from "react";
 import Navigation from "./Navigation";
+import {Helmet} from "react-helmet";
 
 import {
     MDBTabs,
@@ -29,6 +30,10 @@ const Home = () =>{
     
     return(
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>BlogSpot</title>
+            </Helmet>
         <Navigation/>
         <div className="background-image-home" style={{backgroundImage: "url(/blacktheme.jpg)"}}>
             <h2 className="text-center big-text text-capitalize pt-5">4 ways group can stifle creativity</h2>

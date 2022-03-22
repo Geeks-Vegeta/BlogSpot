@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify'; //importing react toastify to show error message
 import 'react-toastify/dist/ReactToastify.css'; //importing toastify css file
 import axios from "axios";
+import {Helmet} from "react-helmet";
 import { LoginContext } from "../App";
 
 
@@ -51,6 +52,10 @@ const Login=()=>{
 
     return(
         <>
+           <Helmet>
+                <meta charSet="utf-8" />
+                <title>BlogSpot - log in</title>
+            </Helmet>
         <MDBContainer>
             <h5 className="m-4">BlogSpot</h5>
             <div className="boxs mt-5 mb-5">
