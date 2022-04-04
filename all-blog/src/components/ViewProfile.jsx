@@ -324,13 +324,13 @@ const ViewProfile=()=>{
                     </>
                 )}
             </div>
-            <div className="more cursur text-center">
+            {/* <div className="more cursur text-center">
                 <NavLink exact to="/setting">
                     <CgMoreO className="text-dark"  size={"1.3rem"}/>
                     <p className="text-dark">more</p> 
                 </NavLink>
                                 
-            </div>
+            </div> */}
         </div>
 
 

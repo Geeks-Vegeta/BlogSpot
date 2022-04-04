@@ -22,6 +22,7 @@ import { NavLink } from "react-router-dom";
 import moment from "moment";
 import { Audio } from  'react-loader-spinner'
 import {Helmet} from "react-helmet";
+import ReactPaginate from 'react-paginate';
 
 
 
@@ -34,6 +35,7 @@ const Profile=()=>{
     const [loading, setLoading] = useState(false);
     const [username, setUserName] = useState();
     const [posts, setPosts] = useState([]);
+    const [totalPost, setTotalPost] = useState();
     const [location, setLocation] = useState();
     const [following, setFollowing] = useState([]);
     const [background, setBackground] = useState();
@@ -49,9 +51,16 @@ const Profile=()=>{
     const [id, setid] = useState();
     const [followingModal, setFollowingModal] = useState(false);
     const [followerModal, setFollowerModal] = useState(false);
+    
+    const [offset, setOffset] = useState(0);
+    const [perPage] = useState(3);
+    const [pageCount, setPageCount] = useState(0)
 
     const followingShow = () => setFollowingModal(!followingModal);
-    const followerShow = () => setFollowerModal(!followerModal)
+    const followerShow = () => setFollowerModal(!followerModal);
+
+
+
 
 
     const deleteShowOpen = (idx, id) =>{
@@ -65,13 +74,21 @@ const Profile=()=>{
     }
 
 
+    const paginationData =async()=>{
+        let allposts = await axios.get("/post/allcurrentuserpost");
+        const slice = allposts.data.slice(offset, offset + perPage);
+        setPosts(slice);
+        setPageCount(Math.ceil(allposts.data.length / perPage));
+    }
+
+
     useEffect(()=>{
         
         const getUser = async()=>{
             setLoading(true);
             let users = await axios.get("/user/currentuser");
             let allposts = await axios.get("/post/allcurrentuserpost");
-            setPosts(allposts.data);
+            setTotalPost(allposts.data);
             setFollowers(users.data.followers);
             setFollowing(users.data.following);
             setUser(users.data); 
@@ -88,14 +105,22 @@ const Profile=()=>{
             setLoading(false);
         }
         getUser();
+        paginationData();
 
-    },[])
+    },[offset])
+
+    const handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        setOffset(selectedPage * perPage);
+    };
 
 
     const getUser = async()=>{
         let users = await axios.get("/user/currentuser");
         let allposts = await axios.get("/post/allcurrentuserpost");
-        setPosts(allposts.data);
+        const slice = allposts.data.slice(offset, offset + perPage);
+        setPosts(slice);
+        setPageCount(Math.ceil(allposts.data.length / perPage));
         setFollowers(users.data.followers);
         setFollowing(users.data.following);
         setUser(users.data); 
@@ -318,7 +343,7 @@ const Profile=()=>{
         <div className="flex-info">
           <div className="followers cursur text-center">
                 <BsFillFileEarmarkPostFill  size={"1.3rem"}/>
-                <p>{posts ? posts.length:0} posts</p>
+                <p>{totalPost ? totalPost.length:0} posts</p>
             </div>
             <div className="followers cursur text-center">
                 <FaUserFriends onClick={followerShow} size={"1.3rem"}/>
@@ -450,7 +475,7 @@ const Profile=()=>{
                             <>
                          
                                 <MDBCol key={idx} sm={12} md={6} lg={4}>
-                                    <MDBCard className="shadow-lg h-100 gy-3">
+                                    <MDBCard className=" h-100 gy-3">
                                     <MDBCardImage
                                         className="profile-post-card-image"
                                         
@@ -549,7 +574,28 @@ const Profile=()=>{
                 )}
             
             </MDBRow>
+            
        </MDBContainer>
+
+       <MDBContainer>
+       <div className="text-center mx-auto my-5">
+            <ReactPaginate
+                    previousLabel={"← Previous"}
+                    nextLabel={"Next →"}
+                    breakLabel={"..."}
+                    pageCount={pageCount}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    previousLinkClassName={"pagination__link"}
+                    nextLinkClassName={"pagination__link"}
+                    disabledClassName={"pagination__link--disabled"}
+                    activeClassName={"pagination__link--active"}
+                    />
+
+       </div>
+
+       </MDBContainer>
+       
        
        </>
         )}

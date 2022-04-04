@@ -1,0 +1,31 @@
+
+
+.welcome{
+    font-weight: 800;
+    font-size: 3rem;
+}
+
+.medium-image{
+    height: 400px;
+}
+
+.small-profile-card{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+
+.small-images{
+    width: 150px;
+    height: 150px;
+}
+
+.name{
+    font-size: large;
+    font-weight: 500;
+}
+
+.link-color{
+    color: rgb(53, 53, 77);
+}

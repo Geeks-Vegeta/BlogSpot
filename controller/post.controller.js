@@ -112,6 +112,63 @@ exports.getUserPostsById=async(req, res)=>{
 }
 
 
+// most liked posts
+exports.getMostLikedPosts=async(req, res)=>{
+
+    try {
+
+        const allposts = await postModel.find().limit(4).sort({like:-1});
+        res.send(allposts);
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+exports.getMostCommentedPosts=async(req, res)=>{
+
+    try {
+        const allposts = await postModel.find().limit(4).sort({comments:-1});
+        res.send(allposts);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+exports.getSingleRandomPosts=async(req, res)=>{
+
+    try {
+        const allposts = await postModel.find().populate('user').limit(4);
+        res.send(allposts);
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
+
+
+exports.getRandomPosts=async(req, res)=>{
+
+    try {
+       
+        let randnumber = Math.floor(Math.random() * 10);
+        const allposts = await postModel.find().limit(4).skip(randnumber);
+
+        res.send(allposts);
+
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
 // getAllRecentPosts
 exports.getAllRecentPosts=async(req, res)=>{
 

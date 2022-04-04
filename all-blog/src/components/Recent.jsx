@@ -23,7 +23,7 @@ const Recent=()=>{
     useEffect(()=>{
 
         const getRecentData=async()=>{
-            setLoading(true);
+            // setLoading(true);
             let {data} = await axios.get(`/post/getAllRecentPosts`);
             let users = await axios.get("/user/currentuser");
             setUser(users.data);

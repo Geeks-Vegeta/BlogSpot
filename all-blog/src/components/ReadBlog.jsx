@@ -17,6 +17,7 @@ import {  AiOutlineDelete, AiOutlineEdit  } from "react-icons/ai";
 import {Helmet} from "react-helmet";
 
 
+
 const ReadBlog=()=>{
 
     const {id, slug} = useParams();
@@ -194,7 +195,7 @@ const ReadBlog=()=>{
                                 <img className="image-read-blog w-100" src={post.image} alt="" />
                             </div>
 
-                            <div className="my-3">
+                            <div className="my-3 read_blog">
                             {ReactHtmlParser(post.content)}
                             </div>
 
@@ -247,7 +248,7 @@ const ReadBlog=()=>{
                                                </>
                                            ):(
                                                <>
-                                                    <NavLink exact to={`/profile/${data.user._id}/${data.user.username.replace(/\s+/g,'-')}`}>
+                                                    <NavLink exact to={`/profile/${data.user._id}/${data.user.username}`}>
                                                     <span className="mx-2">{data.user.username?data.user.username:user.username}</span>
                                                     </NavLink>
                                                </>
