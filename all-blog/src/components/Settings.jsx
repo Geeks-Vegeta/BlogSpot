@@ -171,7 +171,7 @@ const Setting = () =>{
                 <br />
                 <div class="parent-div">
                     <button class="btn-upload">Choose file</button>
-                    <input type="file" name="upfile" accept="image/*" onChange={ProfileInput} />
+                    <input type="file" name="upfile" accept="image/png, image/gif, image/jpeg" onChange={ProfileInput} />
                 </div>
                 <div>
                    <MDBBtn onClick={uploadProfilePic} className="my-3">Update Profile Pic</MDBBtn>
@@ -187,7 +187,7 @@ const Setting = () =>{
                 <br />
                 <div class="parent-div">
                     <button class="btn-upload">Choose file</button>
-                    <input type="file" name="upfile" accept="image/*" onChange={BackgroundInput} />
+                    <input type="file" name="upfile" accept="image/png, image/gif, image/jpeg" onChange={BackgroundInput} />
                 </div>
                 <div>
                    <MDBBtn onClick={uploadBackgroundPic} className="my-3">Update Background Picture</MDBBtn>
