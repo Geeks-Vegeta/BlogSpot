@@ -8,7 +8,6 @@ const userModel = require('../models/userModel');
 exports.sendEmail=async(req, res)=>{
 
     const {email, subject} = req.body;
-    console.log(req.session);
 
     try {
 

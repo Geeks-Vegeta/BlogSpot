@@ -6,6 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd all-blog && npm start",
+    "build_client":"cd all-blog && npm run build",
+    "build":"npm run build_client",
+    "install_client":"cd all-blog && npm install",
+    "install-client": "npm run install_client",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "server":"nodemon app.js",
+    "start": "node app.js",
     "dev": "concurrently \"nodemon app.js \" \"npm run client\""
   },
   "keywords": [],

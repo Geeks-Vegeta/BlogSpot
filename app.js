@@ -22,6 +22,8 @@ const likeRoute = require('./routes/likesRoute');
 
 const followerRoute = require('./routes/followerRoute');
 
+const path = require("path");
+
 
 //importing cors
 const cors = require('cors');
@@ -33,6 +35,10 @@ const emailRoute = require('./routes/emailRoute');
 dotenv.config();
 
 require('./models/Connection');
+
+
+//Have Node serve the files for our built React app
+app.use(express.static(path.join("./all-blog", 'build')));
 
 
 // middleware
@@ -62,9 +68,7 @@ app.use("/like", likeRoute);
 app.use("/follow", followerRoute);
 app.use("/sendemail", emailRoute);
 
-app.get("/", (req, res)=>{
-    res.send("hello shreyas")
-})
+
 
 
 app.post("/verifytoken", async(req, res)=>{
@@ -80,10 +84,29 @@ app.post("/verifytoken", async(req, res)=>{
 
         
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 
 })
+
+//initial path
+app.get('/', function (req, res) {
+    res.sendFile(path.join("./all-blog", 'build', 'index.html'));
+  });
+
+
+//if error path
+app.get('*', function (req, res) {
+    res.sendFile(path.resolve("./all-blog", 'build', 'index.html'));
+  });
+
+
+
+
+if (process.env.NODE_ENV === "production"){
+    app.use(express.static('./all-blog/build'));
+}
+
 
 
 const port = process.env.PORT || 5000;
